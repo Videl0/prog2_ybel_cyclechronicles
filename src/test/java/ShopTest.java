@@ -21,7 +21,7 @@ public class ShopTest {
     public void auftragMitErlaubtemTypSollAngenommenWerden() {
         Order order = mock(Order.class);
         when(order.getBicycleType()).thenReturn(Type.RACE);
-        when(order.getCustomer()).thenReturn("Alice");
+        when(order.getCustomer()).thenReturn("Tom");
 
         boolean result = shop.accept(order);
 
@@ -36,7 +36,7 @@ public class ShopTest {
     public void ebikeSollAbgelehntWerden() {
         Order order = mock(Order.class);
         when(order.getBicycleType()).thenReturn(Type.EBIKE);
-        when(order.getCustomer()).thenReturn("Alice");
+        when(order.getCustomer()).thenReturn("Tom");
 
         boolean result = shop.accept(order);
 
@@ -51,7 +51,7 @@ public class ShopTest {
     public void gravelBikeSollAbgelehntWerden() {
         Order order = mock(Order.class);
         when(order.getBicycleType()).thenReturn(Type.GRAVEL);
-        when(order.getCustomer()).thenReturn("Alice");
+        when(order.getCustomer()).thenReturn("Tom");
 
         boolean result = shop.accept(order);
 
@@ -66,11 +66,11 @@ public class ShopTest {
     public void zweiterAuftragVomSelbenKundenSollAbgelehntWerden() {
         Order order1 = mock(Order.class);
         when(order1.getBicycleType()).thenReturn(Type.RACE);
-        when(order1.getCustomer()).thenReturn("Alice");
+        when(order1.getCustomer()).thenReturn("Tom");
 
         Order order2 = mock(Order.class);
         when(order2.getBicycleType()).thenReturn(Type.RACE);
-        when(order2.getCustomer()).thenReturn("Alice");
+        when(order2.getCustomer()).thenReturn("Tom");
 
         boolean result1 = shop.accept(order1); // erster Auftrag wird angenommen
         System.out.println("Auftrag1 angenommen: " + result1);
@@ -159,4 +159,33 @@ public class ShopTest {
 
         assertFalse(result);
     }
+
+    // MOCKING II
+
+    @Test
+    public void reparierenSollAeltestenAuftragBearbeiten() {
+        Order auftrag1 = mock(Order.class);
+        when(auftrag1.getCustomer()).thenReturn("Anna");
+        when(auftrag1.getBicycleType()).thenReturn(Type.RACE);
+
+        Order auftrag2 = mock(Order.class);
+        when(auftrag2.getCustomer()).thenReturn("Ben");
+        when(auftrag2.getBicycleType()).thenReturn(Type.RACE);
+
+        boolean angenommen1 = shop.accept(auftrag1);
+        System.out.println("Auftrag1 angenommen: " + angenommen1);
+
+        boolean angenommen2 = shop.accept(auftrag2);
+        System.out.println("Auftrag2 angenommen: " + angenommen2);
+
+        System.out.println("Versuche Reparatur durchzuführen (sollte noch nicht funktionieren)");
+
+        try {
+            shop.repair();
+            fail("Es wurde keine Exception geworfen"); // Test schlägt fehl, wenn keine Exception kommt
+        } catch (UnsupportedOperationException e) {
+            // Test bestanden
+        }
+    }
+
 }
