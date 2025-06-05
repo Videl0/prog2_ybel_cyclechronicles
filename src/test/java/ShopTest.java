@@ -188,4 +188,25 @@ public class ShopTest {
         }
     }
 
+    @Test
+    public void lieferungSollRepariertenAuftragFinden() {
+        Order auftrag = mock(Order.class);
+        when(auftrag.getCustomer()).thenReturn("Clara");
+        when(auftrag.getBicycleType()).thenReturn(Type.RACE);
+
+        boolean angenommen = shop.accept(auftrag);
+        System.out.println("Auftragg angenommen: " + angenommen);
+
+        System.out.println("Versuche Reparatur und Lieferung (sollte noch nicht funktionieren)");
+
+        try {
+            shop.repair();
+            shop.deliver("Clara");
+            fail("Es wurde keine Exception geworfen"); // Test schlägt fehl, wenn keine Exception kommt
+        } catch (UnsupportedOperationException e) {
+            // Test bestanden
+        }
+    }
+
+
 }
