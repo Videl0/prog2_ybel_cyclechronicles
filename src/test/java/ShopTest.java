@@ -208,5 +208,18 @@ public class ShopTest {
         }
     }
 
+    //(optional)
+    @Test
+    public void lieferungSollLeeresErgebnisGebenWennKeinPassenderAuftrag() {
+        System.out.println("Kein Auftrag vorhanden, versuche direkte Lieferung");
+
+        try {
+            shop.deliver("Unbekannt");
+            fail("Es wurde keine Exception geworfen"); // Test schlägt fehl, wenn keine Exception kommt
+        } catch (UnsupportedOperationException e) {
+            // Test bestanden
+        }
+    }
+
 
 }
